@@ -1,0 +1,146 @@
+:root {
+  --bg: #f7f3ea;
+  --card: #fffdf7;
+  --text: #2b2b2b;
+  --muted: #7a7264;
+  --accent: #b8860b;
+  --accent-soft: #f0e6c8;
+  --border: #e6ddc8;
+}
+
+body.dark {
+  --bg: #141a24;
+  --card: #1d2534;
+  --text: #e8e6df;
+  --muted: #9aa3b2;
+  --accent: #d4af37;
+  --accent-soft: #2a3346;
+  --border: #2e3a4f;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Thmanyah Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  transition: background .3s, color .3s;
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar h1 {
+  font-family: "Thmanyah Serif Display", serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--accent);
+}
+
+.controls button {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 8px 14px;
+  margin-inline-start: 6px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .15s;
+}
+.controls button:hover { transform: translateY(-2px); }
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 18px;
+}
+.tab {
+  font-family: "Thmanyah Serif Text", serif;
+  font-size: 1.1rem;
+  padding: 10px 28px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+.tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+main {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.06);
+  transition: background .3s;
+}
+
+.dhikr-title {
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.dhikr-text {
+  font-family: "Thmanyah Serif Text", serif;
+  font-size: var(--dhikr-size, 1.35rem);
+  white-space: pre-line;
+  margin-bottom: 10px;
+}
+
+.dhikr-source { color: var(--muted); font-size: .9rem; margin-bottom: 14px; }
+
+.tasbih {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px dashed var(--border);
+  padding-top: 12px;
+}
+
+.tasbih .count {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 48px;
+  text-align: center;
+}
+
+.tasbih .target { color: var(--muted); font-size: .85rem; }
+
+.tasbih button {
+  font-family: inherit;
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--accent-soft);
+  color: var(--text);
+  cursor: pointer;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
