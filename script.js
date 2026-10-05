@@ -2,7 +2,7 @@ const ADHKAR = {
   morning: [
     {
       title: "آية الكرسي",
-      text: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ...",
+      text: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ",
       source: "سورة البقرة (255)",
       count: 1
     },
@@ -144,8 +144,33 @@ const ADHKAR = {
 };
 
 let dhikrSize = 1.35;
+let totalTasbih = 0;
+let completedCount = 0;
+let currentTab = 'morning';
+
+function checkFinished() {
+  const list = document.getElementById('adhkarList');
+  const remaining = list.querySelectorAll('.card').length;
+  if (remaining === 0) {
+    const end = document.createElement('div');
+    end.className = 'card end-panel';
+    end.innerHTML = `
+      <h2 style="color:var(--accent); margin-bottom:10px">أحسنت! 🎉</h2>
+      <p>أتممت جميع أذكار ${currentTab === 'morning' ? 'الصباح' : 'المساء'}</p>
+      <p style="margin:8px 0">🔢 الأذكار المقروئة: <strong>${completedCount}</strong></p>
+      <p style="margin:8px 0">📿 الحسنات (مجموع التسبيح): <strong>${totalTasbih}</strong></p>
+      <button id="restart" style="margin-top:12px; font-family:inherit; padding:10px 24px; border-radius:10px; border:1px solid var(--border); background:var(--accent-soft); color:var(--text); cursor:pointer">إعادة الأذكار</button>`;
+    list.appendChild(end);
+    document.getElementById('restart').addEventListener('click', () => {
+      totalTasbih = 0;
+      completedCount = 0;
+      render(currentTab);
+    });
+  }
+}
 
 function render(tab) {
+  currentTab = tab;
   const list = document.getElementById('adhkarList');
   list.innerHTML = '';
   ADHKAR[tab].forEach((d, i) => {
@@ -163,7 +188,15 @@ function render(tab) {
       </div>`;
     const countEl = card.querySelector('.count');
     card.querySelector('.plus').addEventListener('click', () => {
-      countEl.textContent = Number(countEl.textContent) + 1;
+      const n = Number(countEl.textContent) + 1;
+      countEl.textContent = n;
+      totalTasbih++;
+      if (n >= d.count) {
+        completedCount++;
+        card.style.transition = 'opacity .5s';
+        card.style.opacity = '0';
+        setTimeout(() => { card.remove(); checkFinished(); }, 500);
+      }
     });
     card.querySelector('.reset').addEventListener('click', () => {
       countEl.textContent = 0;
@@ -176,6 +209,8 @@ document.querySelectorAll('.tab').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    totalTasbih = 0;
+    completedCount = 0;
     render(btn.dataset.tab);
   });
 });
